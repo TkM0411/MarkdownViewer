@@ -7,11 +7,11 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "terraform-state-bucket-075925653666"
-    key            = "MarkdownViewer/TerraformState.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    use_lockfile   = true
+    bucket       = "terraform-state-bucket-075925653666"
+    key          = "MarkdownViewer/TerraformState.tfstate"
+    region       = "us-east-1"
+    encrypt      = true
+    use_lockfile = true
   }
 }
 

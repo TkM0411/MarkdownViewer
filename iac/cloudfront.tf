@@ -12,6 +12,10 @@ resource "aws_cloudfront_distribution" "website_cloudfront_distribution" {
     origin_access_control_id = aws_cloudfront_origin_access_control.s3_bucket_oac.id
   }
 
+  aliases = [
+    "*.${var.custom_domain_name}",
+    "${local.infraprefix}.${var.custom_domain_name}"
+  ]
   enabled             = true
   is_ipv6_enabled     = true
   comment             = "CloudFront Distribution for ${var.project} Static Website"
@@ -42,7 +46,9 @@ resource "aws_cloudfront_distribution" "website_cloudfront_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn      = data.aws_acm_certificate.custom_domain_ssl_certificate.arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   tags = merge(local.common_tags, {
