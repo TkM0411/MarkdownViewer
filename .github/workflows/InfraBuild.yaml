@@ -25,3 +25,6 @@ jobs:
           cd ./iac
           terraform init
           terraform plan -out ${{ vars.PROJECT_NAME }}.tfplan
+      - name: Terraform Apply
+        run: |
+          terraform apply ${{ vars.PROJECT_NAME }}.tfplan
