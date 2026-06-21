@@ -20,11 +20,9 @@ jobs:
           role-session-name: GitHubTerraformSession
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4.0.1
-      - name: Terraform Initialize and Plan
+      - name: Terraform Initialize, Plan and Apply
         run: |
           cd ./iac
           terraform init
           terraform plan -out ${{ vars.PROJECT_NAME }}.tfplan
-      - name: Terraform Apply
-        run: |
           terraform apply ${{ vars.PROJECT_NAME }}.tfplan
