@@ -1,0 +1,33 @@
+name: InfraDestroy
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Confirm proceeding ahead with tearing down the infrastructure?'
+        required: true
+        type: choice
+        options:
+          - "No"
+          - "Yes"
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  TerraformDestroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.1.0
+        with:
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: GitHubTerraformSession
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4.0.1
+      - name: Terraform Init and Destroy
+        run: |
+          cd ./iac
+          terraform init
+          terraform destroy
